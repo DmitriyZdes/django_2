@@ -5,5 +5,4 @@ from django.conf import settings
 
 urlpatterns = [
     path('', home, name='home'),
-    path('contacts/', contacts, name='contacts') + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
-    ]
+    path('contacts/', contacts, name='contacts')] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
