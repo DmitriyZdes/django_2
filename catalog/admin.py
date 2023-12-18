@@ -4,9 +4,10 @@ from catalog.models import Product, Category
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    fields = ('name', 'price', 'category')
-
+    list_display = ('name', 'price', 'category', 'id',)
+    list_filter = ('category',)
+    search_fields = ('name', 'description',)
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    fields = ('name',)
+    list_display = ('name', 'id',)

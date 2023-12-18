@@ -1,20 +1,20 @@
 from django.core.management import BaseCommand
-from catalog.models import Product
+from catalog.models import Category
 
 
 class Command(BaseCommand):
 
-    def fill(self):
+    def handle(self, *args, **options):
 
-        Product.objects.all().delete()
-        product_list = [
-            {'name': 'яблоко', 'pk': 1, 'category': 'фрукты'},
-            {'name': 'помидор', 'pk': 2, 'category': 'овощи'}
+        Category.objects.all().delete()
+        category_list = [
+            {'name': "Cпорттовары", 'description': "Для здорового образа жизни"},
+            {'name': "Канцелярия", 'description': "Всегда актуальны"}
 
         ]
 
         created_list = []
-        for product in product_list:
-            created_list.append(Product(**product))
+        for category in category_list:
+            created_list.append(Category(**category))
 
-        Product.objects.bulk_create(created_list)
+        Category.objects.bulk_create(created_list)
