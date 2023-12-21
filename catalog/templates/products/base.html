@@ -32,9 +32,9 @@
             </div>
             <div class="col-6 col-md">
                 <h5>Дополнительно</h5>
-                <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">Мы пишем</a></li>
-                </ul>
+                {% include 'catalog/includes/inc_poducts.html' %}
+                {% block content %}
+                {% endblock %}
             </div>
             <div class="col-6 col-md">
                 <h5>О нас</h5>
