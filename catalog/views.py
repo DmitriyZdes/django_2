@@ -23,4 +23,4 @@ def product(request, pk):
         'object_list': Product.objects.filter(category_id=pk)
      }
 
-    return render(request, 'product_list.html', context)
+    return render(request, 'product_inf.html', context)
