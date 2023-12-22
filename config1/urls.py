@@ -26,4 +26,4 @@ urlpatterns = [
     #path('product_inf/', views.product),
     #path('product_list/', views.products_view)
 
-    ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+    ] #static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
