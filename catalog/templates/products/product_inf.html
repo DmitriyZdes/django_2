@@ -5,12 +5,13 @@
   <img src="{{ object.image | media_url }}" class="card-img-top" alt="...">
   <div class="card-body">
     <h5 class="card-title">{{ title }}</h5>
+      <img src="{{ object.image | media_url }}">
     <p class="card-text">{{ object.description }}.</p>
   </div>
   <ul class="list-group list-group-flush">
     <li class="list-group-item">{{ object.category }}</li>
-    <li class="list-group-item">{{object.price}}</li>
-    <li class="list-group-item">{{object.created_date}}</li>
+    <li class="list-group-item">{{ object.price }}</li>
+    <li class="list-group-item">{{ object.created_date }}</li>
   </ul>
   </div>
 </div>

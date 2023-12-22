@@ -3,7 +3,7 @@ from django.conf import settings
 
 register = template.Library()
 
-
+@register.filter()
 def media_url(value):
     """
     Фильтр для преобразования пути в полный путь для доступа к медиафайлу.

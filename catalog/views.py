@@ -18,7 +18,10 @@ from catalog.models import Product
 def products_view(request):
 
     products = Product.objects.all()
-    return render(request, 'products/product_list.html', products)
+    context = {
+        "object_list": products
+    }
+    return render(request, 'products/product_list.html', context)
 
 
 def product(request, pk):
