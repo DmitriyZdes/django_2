@@ -15,6 +15,11 @@ from catalog.models import Product
     #return render(request, 'catalog/contacts.html')
 
 
+def products_view(request):
+
+    products = Product.objects.all()
+    return render(request, 'catalog/product_list.html', products)
+
 
 def product(request, pk):
 

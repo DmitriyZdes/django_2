@@ -1,9 +1,9 @@
 from django.urls import path
-from django.conf.urls.static import static
-from catalog.views import product #home, contacts
-from django.conf import settings
+from catalog.views import product, products_view #home, contacts
+
 
 urlpatterns = [
     #path('', home, name='home'),
     #path('contacts/', contacts, name='contacts'),
-    path('product/<int:pk>/', product, name='product')] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+    path('product/<int:pk>/', product, name='product'),
+    path('products_view', products_view, name='products_view')]
