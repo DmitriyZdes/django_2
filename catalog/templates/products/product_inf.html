@@ -4,7 +4,6 @@
 <div class="card" style="width: 18rem;">
   <img src="{{ object.image | media_url }}" class="card-img-top" alt="...">
   <div class="card-body">
-      {% for object in object_list %}
     <h5 class="card-title">{{ title }}</h5>
     <p class="card-text">{{ object.description }}.</p>
   </div>
@@ -14,6 +13,5 @@
     <li class="list-group-item">{{object.created_date}}</li>
   </ul>
   </div>
-        {% endfor %}
 </div>
 <{% endblock %}
