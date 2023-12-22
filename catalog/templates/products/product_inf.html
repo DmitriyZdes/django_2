@@ -1,14 +1,18 @@
 {% extends 'products/base.html' %}
-
+{% load tag %}
 {% block content %}
 <div class="container">
     <div class="col-12">
         <div class="row">
+            {% for object in object_list %}
             <div class="col-6">
                 <div class="card">
                     <h3 class="card-title">
                         {{ object.name }}
                     </h3>
+                </div>
+                <div class="card-body">
+                    <img src="{{ object.image | media_url }}">
                 </div>
                 <div class="card-body">
                     <p>
@@ -17,10 +21,11 @@
                 </div>
                 <div class="card-footer">
                     <p>
-                        {{ product.name }}
+                        {{ object.change_date }}
                     </p>
                 </div>
             </div>
+            {% endfor %}
         </div>
     </div>
 </div>
