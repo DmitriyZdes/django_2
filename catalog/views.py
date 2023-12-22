@@ -18,7 +18,7 @@ from catalog.models import Product
 def products_view(request):
 
     products = Product.objects.all()
-    return render(request, 'catalog/product_list.html', products)
+    return render(request, 'products/product_list.html', products)
 
 
 def product(request, pk):
@@ -28,4 +28,4 @@ def product(request, pk):
         'object_list': Product.objects.filter(category_id=pk)
      }
 
-    return render(request, 'product_inf.html', context)
+    return render(request, 'products/product_inf.html', context)

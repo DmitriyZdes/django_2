@@ -10,7 +10,7 @@
             </div>
             <div class="card-body">
                 <h5 class="card-title pricing-card-title">{{object.category}}</h5>
-                <img src="{{ product.image | media_url }}">
+                <img src="{{ object.image | media_url }}">
                 <p class="card-text">{{object.description | truncatechars:100}}</p>
                 <h1 class="card-title pricing-card-title">{{object.price | floatformat:2}}</h1>
             </div>
