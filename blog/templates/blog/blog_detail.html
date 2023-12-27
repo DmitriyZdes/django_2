@@ -1,0 +1,27 @@
+{% extends 'blog/base_blog.html' %}
+{% block content %}
+
+
+<div class="col-12">
+    <div class="text-center container">
+        <div class="card shadow-sm" style="height: 24rem;">
+            <div class="card-body">
+                <h5 class="card-title mb-3">{{ object.title|title }}</h5>
+                <h6 class="card-subtitle mb-3 text-body-secondary">{{ object.slug }}</h6>
+                <p class="card-text">{{ object.description }}</p>
+                <div>
+                    <a href="{% url 'blog:blog_detail' %}" type="button"
+                       class="btn btn-sm btn-outline-secondary mb-3">Назад к блогам</a>
+
+                    <div class="row mb-3">
+                        <a>
+                            <small class="text-body-secondary">Создан {{ object.creation_date }}</small>
+                            <small class="text-body-secondary">Количество просмотров{{ object.count_view }}</small>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

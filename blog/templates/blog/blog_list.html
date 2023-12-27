@@ -1,0 +1,42 @@
+{% extends 'blog/base_blog.html' %}
+
+{% block content %}
+
+<div class="text-center container">
+<a class="btn btn-success" href="{% url 'blog:blog_create' %}" type="button">Cоздать блог</a>
+</div>
+
+<div class="album py-5 bg-body-tertiary">
+    <div class="text-center container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+            {% for object in blog_list %}
+
+            <div class="col">
+                <div class="card shadow-sm" style="height: 24rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ object.title|title }}</h5>
+                        <p class="card-text">{{ object.content|truncatechars:100 }}</p>
+                        <div>
+                           <a href="{% url 'blog:blog_detail' object.pk %}" type="button"
+                           class="btn btn-sm btn-outline-secondary">Обзор</a>
+                            <a href="{% url 'blog:blog_update' object.pk %}" type="button"
+                           class="btn btn-sm btn-outline-secondary">Редактировать</a>
+                            <a href="{% url 'blog:blog_delete' object.pk %}" type="button"
+                           class="btn btn-sm btn-outline-secondary">Удалить</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
