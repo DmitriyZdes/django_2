@@ -7,10 +7,11 @@
         <div class="card shadow-sm" style="height: 24rem;">
             <div class="card-body">
                 <h5 class="card-title mb-3">{{ object.title|title }}</h5>
+                 <img src="{{ object.image}}" width="100%" height="100%">
                 <h6 class="card-subtitle mb-3 text-body-secondary">{{ object.slug }}</h6>
                 <p class="card-text">{{ object.description }}</p>
                 <div>
-                    <a href="{% url 'blog:blog_detail' %}" type="button"
+                    <a href="{% url 'blog:art_list'%}" type="button"
                        class="btn btn-sm btn-outline-secondary mb-3">Назад к блогам</a>
 
                     <div class="row mb-3">
