@@ -1,6 +1,10 @@
 #from django.shortcuts import render
-from catalog.models import Product
-from django.views.generic import ListView, DetailView
+from django.forms import inlineformset_factory
+from django.urls import reverse_lazy
+
+from catalog.models import Product, Version
+from catalog.forms import ProductForm, VersionForm
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 # FBV контроллеры
 
@@ -47,14 +51,13 @@ class ProductListView(ListView):
         "title": 'Продукт',
         'object_list': Product.objects.all()
     }
-    template_name = 'products/product_list.html'
-
+    form_class = ProductForm
 
 class ProductDetailView(DetailView):
 
     model = Product
+    form_class = ProductForm
 
-    template_name = 'products/product_detail.html'
 
     def get_queryset(self, *args, **kwargs):
         queryset = super().get_queryset()
@@ -62,3 +65,41 @@ class ProductDetailView(DetailView):
         return queryset
 
 
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductForm
+    success_url = reverse_lazy("catalog:pr_list")
+
+    def form_valid(self, form):
+        new_product = form.save()
+        new_product.save()
+        version = Version.objects.create(product=new_product)
+        version.ver_name = "created"
+        version.save()
+        return super().form_valid(form)
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    success_url = reverse_lazy("catalog:pr_list")
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+
+    def get_context_data(self, **kwards):
+        context_data = super().get_context_data(**kwards)
+        ProductFormset = inlineformset_factory(Product, Version, form=VersionForm, extra=1)
+        if self.request.method == "POST":
+            context_data['formset'] = ProductFormset(self.request.POST, instance=self.object)
+        else:
+            context_data['formset'] = ProductFormset(instance=self.object)
+        return context_data
+
+    def form_valid(self, form):
+        context_data = self.get_context_data()
+        formset = context_data['formset']
+        self.object = form.save()
+        if formset.is_valid():
+            formset.instance = self.object
+            formset.save()
+        return super().form_valid(form)
