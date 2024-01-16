@@ -2,6 +2,9 @@ from django.urls import path
 from catalog.views import ProductDetailView, ProductListView, ProductCreateView, ProductDeleteView, ProductUpdateView
 from django.conf.urls.static import static
 from django.conf import settings
+from catalog.apps import CatalogConfig
+
+app_name = CatalogConfig.name
 
 urlpatterns = [
     path('product_detail/<int:pk>/', ProductDetailView.as_view(), name='view'),

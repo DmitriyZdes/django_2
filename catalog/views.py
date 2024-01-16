@@ -53,11 +53,11 @@ class ProductListView(ListView):
     }
     form_class = ProductForm
 
+
 class ProductDetailView(DetailView):
 
     model = Product
     form_class = ProductForm
-
 
     def get_queryset(self, *args, **kwargs):
         queryset = super().get_queryset()

@@ -83,7 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'basket',
         'USER': 'postgres',
-        'PASSWORD': 'dim_dim'
+        'PASSWORD': '12345'
     }
 }
 
