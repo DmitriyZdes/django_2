@@ -29,7 +29,7 @@ class LoginView(BaseLoginView):
 class LogoutView(BaseLogoutView):
     pass
 
-class RegisterView(CreateView):
+class RegisterView(LoginRequiredMixin, CreateView):
 
     model = User
     form_class = UserForm
@@ -50,7 +50,7 @@ class RegisterView(CreateView):
         )
         return response
 
-class VerifyEmailView(View):
+class VerifyEmailView(LoginRequiredMixin, View):
     def get(self, request, uid, token):
         try:
             user = get_object_or_404(User, pk=uid, verification_token=token)
@@ -74,7 +74,7 @@ class ProfileView(LoginRequiredMixin, UpdateView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class CustomPasswordResetView(PasswordResetView):
+class CustomPasswordResetView(LoginRequiredMixin, PasswordResetView):
     def form_valid(self, form):
         # Генерация нового случайного пароля
         new_password = ''.join([str(randint(0, 9)) for _ in range(12)])
