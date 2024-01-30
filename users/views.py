@@ -10,8 +10,8 @@ from django.contrib.auth.views import LoginView as BaseLoginView, LogoutView as 
 from django.core.mail import send_mail
 from django.http import HttpResponseForbidden
 
-from django.shortcuts import render, get_object_or_404
-from django.urls import reverse_lazy
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import CreateView, UpdateView
 
@@ -83,6 +83,7 @@ class CustomPasswordResetView(LoginRequiredMixin, PasswordResetView):
         user = User.objects.get(email=email)
         user.set_password(new_password)
         user.save()
+        return redirect(reverse('products:base.html'))
 
         send_mail(
             subject='Восстановление пароля',
