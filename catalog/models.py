@@ -1,5 +1,5 @@
 from django.db import models
-
+from users.models import User
 
 class Product(models.Model):
 
@@ -10,6 +10,7 @@ class Product(models.Model):
     price = models.IntegerField(verbose_name='цена')
     created_date = models.DateTimeField(verbose_name="дата создания")
     change_date = models.DateTimeField(verbose_name="дата последнего изменения")
+    user = models.ForeignKey(User, default=1, on_delete=models.CASCADE, verbose_name='владелец')
 
     def __str__(self):
 
