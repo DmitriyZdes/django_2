@@ -65,6 +65,9 @@ class ProfileView(LoginRequiredMixin, UpdateView):
     form_class = UserProfileForm
     success_url = reverse_lazy('users:user_form')
 
+    def get_object(self, queryset=None):
+        return self.request.user
+
     def dispatch(self, request, *args, **kwargs):
         if not self.request.user.is_verified:
             return HttpResponseForbidden("Ваша электронная почта еще не проверена.")
