@@ -10,8 +10,8 @@ from django.contrib.auth.views import LoginView as BaseLoginView, LogoutView as 
 from django.core.mail import send_mail
 from django.http import HttpResponseForbidden
 
-from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy, reverse
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, UpdateView
 
@@ -29,7 +29,7 @@ class LoginView(BaseLoginView):
 class LogoutView(BaseLogoutView):
     pass
 
-class RegisterView(LoginRequiredMixin, CreateView):
+class RegisterView(CreateView):
 
     model = User
     form_class = UserForm
@@ -50,7 +50,7 @@ class RegisterView(LoginRequiredMixin, CreateView):
         )
         return response
 
-class VerifyEmailView(LoginRequiredMixin, View):
+class VerifyEmailView(View):
     def get(self, request, uid, token):
         try:
             user = get_object_or_404(User, pk=uid, verification_token=token)
@@ -74,7 +74,7 @@ class ProfileView(LoginRequiredMixin, UpdateView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class CustomPasswordResetView(LoginRequiredMixin, PasswordResetView):
+class CustomPasswordResetView(PasswordResetView):
     def form_valid(self, form):
         # Генерация нового случайного пароля
         new_password = ''.join([str(randint(0, 9)) for _ in range(12)])
@@ -83,7 +83,6 @@ class CustomPasswordResetView(LoginRequiredMixin, PasswordResetView):
         user = User.objects.get(email=email)
         user.set_password(new_password)
         user.save()
-        return redirect(reverse('products:base.html'))
 
         send_mail(
             subject='Восстановление пароля',
@@ -91,5 +90,4 @@ class CustomPasswordResetView(LoginRequiredMixin, PasswordResetView):
             from_email=settings.EMAIL_HOST_USER,
             recipient_list=[user.email]
         )
-
         return super().form_valid(form)

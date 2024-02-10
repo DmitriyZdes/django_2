@@ -1,6 +1,6 @@
 from django.db import models
 from users.models import User
-
+from django.conf import settings
 class Product(models.Model):
 
     name = models.CharField(max_length=100, verbose_name='название')
@@ -10,7 +10,7 @@ class Product(models.Model):
     price = models.IntegerField(verbose_name='цена')
     created_date = models.DateTimeField(verbose_name="дата создания")
     change_date = models.DateTimeField(verbose_name="дата последнего изменения")
-    user = models.ForeignKey(User, default=1, on_delete=models.CASCADE, verbose_name='владелец')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, verbose_name='владелец')
 
     def __str__(self):
 
