@@ -16,3 +16,6 @@ class User(AbstractUser):
     country = models.CharField(max_length=100, verbose_name='страна', blank=True, null=True)
     is_verified = models.BooleanField(default=True, verbose_name='верифицирован ли аккаунт')
 
+class ConfirmationCode(models.Model):
+
+    code = models.CharField(unique=True, max_length=150, verbose_name='код')

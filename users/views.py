@@ -1,7 +1,7 @@
 from random import randint
 
 from django.conf import settings
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView as BaseLoginView, LogoutView as BaseLogoutView, \
     PasswordResetView
@@ -13,9 +13,9 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, FormView
 
-from users.forms import UserForm, UserProfileForm
+from users.forms import UserForm, UserProfileForm, ConfirmationCodeForm
 from users.models import User
 
 # Create your views here.
@@ -91,3 +91,26 @@ class CustomPasswordResetView(PasswordResetView):
             recipient_list=[user.email]
         )
         return super().form_valid(form)
+
+
+class SuccessConfirmationMixin:
+    def form_valid(self, form):
+
+        code = form.cleaned_data.get('code')
+        user = (
+            User.objects.filter(confirmation_code=code).select_related('confirmation_code').first()
+
+
+        )
+        user.is_active=True
+        user.confirmation_code.delete()
+        user.save()
+        login(self.request, user)
+        return super().form_valid(form)
+
+
+class ConfirmationCodeView(FormView):
+
+        form_class = ConfirmationCodeForm
+        success_url = reverse_lazy('users:login')
+
