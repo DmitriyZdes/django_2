@@ -113,4 +113,4 @@ class ConfirmationCodeView(FormView):
 
         form_class = ConfirmationCodeForm
         success_url = reverse_lazy('users:login')
-
+        template_name = 'users/password_confirm_email.html'
