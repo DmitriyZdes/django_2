@@ -15,7 +15,5 @@ class User(AbstractUser):
     phone_number = models.CharField(max_length=50, verbose_name='номер телефона', blank=True, null=True)
     country = models.CharField(max_length=100, verbose_name='страна', blank=True, null=True)
     is_verified = models.BooleanField(default=True, verbose_name='верифицирован ли аккаунт')
+    verify_code = models.CharField(default=0, verbose_name='код верификации')
 
-class ConfirmationCode(models.Model):
-
-    code = models.CharField(unique=True, max_length=150, verbose_name='код')
