@@ -1,7 +1,8 @@
 #from django.shortcuts import render
 from django.forms import inlineformset_factory
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, \
+    UserPassesTestMixin
 from catalog.models import Product, Version
 from catalog.forms import ProductForm, VersionForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -78,13 +79,17 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
         version.save()
         return super().form_valid(form)
 
-class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy("catalog:pr_list")
 
-class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Product
     form_class = ProductForm
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
 
     def get_context_data(self, **kwards):
         context_data = super().get_context_data(**kwards)
