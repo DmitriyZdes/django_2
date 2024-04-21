@@ -21,11 +21,12 @@
               <form method="post" enctype="multipart/form-data">
               {% csrf_token %}
               {{ form.as_p }}
-              {% if perms.user.is_superuser or user == product.owner %}
+              {% if perms.user.is_superuser or request.user == product.owner %}
                 <a href="{% url 'catalog:update_product' object.pk%}" class="btn btn-primary">Редактировать</a>
               {% else %}
                 <p>Нет прав на редактирование</p>
               {% endif %}
+              </form>
           </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
-from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
+from django.http import Http404
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from catalog.models import Product, Version
@@ -54,10 +54,12 @@ class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def test_func(self):
         return self.request.user.is_superuser
 
-    def get_form_class(self, queryset=None):
-        if self.request.user == self.object.owner:
-            return ProductForm
-        raise PermissionDenied
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        if self.object.owner == self.request.user or self.request.user.is_superuser:
+            return self.object
+        else:
+            raise Http404
 
     def get_context_data(self, **kwards):
         context_data = super().get_context_data(**kwards)
