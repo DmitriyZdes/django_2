@@ -1,5 +1,4 @@
 {% extends 'catalog/base.html' %}
-
 {% block content %}
   <div class="col-12">
     <div class="row text-center">
@@ -10,9 +9,6 @@
             <form method="post" enctype="multipart/form-data">
               {% csrf_token %}
               {{ form.as_p }}
-              {% if product %}
-                <button type="submit" class="btn btn-primary">Сохранить</button>
-              {% else %}
                 <a href="{% url 'catalog:create_product'%}" class="btn btn-primary">Создать</a>
             </form>
           </div>
@@ -22,8 +18,11 @@
         <div class="card">
           <div class="card-header">Изменение</div>
           <div class="card-body">
-              {% if perms.user.is_superuser %}
-                <a href="{% url 'catalog:update_product'%}" class="btn btn-primary">Редактировать</a>
+              <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              {{ form.as_p }}
+              {% if perms.user.is_superuser or user == product.owner %}
+                <a href="{% url 'catalog:update_product' object.pk%}" class="btn btn-primary">Редактировать</a>
               {% else %}
                 <p>Нет прав на редактирование</p>
               {% endif %}

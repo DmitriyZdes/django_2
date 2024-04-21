@@ -35,5 +35,6 @@ class ConfirmationCodeForm(forms.ModelForm):
 
         return self.cleaned_data['code']
 
+
 class VerificationForm(forms.Form):
     verify_code = forms.CharField(max_length=12, label='Введите код верификации')

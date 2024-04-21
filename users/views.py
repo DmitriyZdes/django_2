@@ -19,19 +19,19 @@ from django.views.generic import CreateView, UpdateView, FormView
 from users.forms import UserForm, UserProfileForm, VerificationForm
 from users.models import User
 
+
 # Create your views here.
 
 
 class LoginView(BaseLoginView):
-
     template_name = 'users/login.html'
 
 
 class LogoutView(BaseLogoutView):
     pass
 
-class RegisterView(CreateView):
 
+class RegisterView(CreateView):
     model = User
     form_class = UserForm
     success_url = reverse_lazy('users:login')
@@ -44,7 +44,8 @@ class RegisterView(CreateView):
         user.verify_code = generate_code
         user.save()
         mail_subject = 'Рады, что вы нашли именно нас!'
-        message = f'Поздравляем, Вы зарегистрировались на нашем портале! Для верификации аккаунта введите код {generate_code}'
+        message = (f'Поздравляем, Вы зарегистрировались на нашем портале! '
+                   f'Для верификации аккаунта введите код 'f'{generate_code}')
 
         send_mail(
             subject=mail_subject,
@@ -55,12 +56,13 @@ class RegisterView(CreateView):
 
         return redirect(reverse('users:verification', kwargs={'pk': user.pk}))
 
-class VerifyEmailView(View):
 
+class VerifyEmailView(View):
     template_name = 'users/verification.html'
+
     def get(self, request, *args, **kwargs):
         form = VerificationForm()
-        return render(request, self.template_name, {'form':form})
+        return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
         form = VerificationForm(request.POST)
@@ -77,6 +79,7 @@ class VerifyEmailView(View):
                 messages.error(request, 'Неверный код верификации. Попробуйте снова.')
 
             return render(request, self.template_name, {'form': form})
+
 
 class ProfileView(LoginRequiredMixin, UpdateView):
     model = User
@@ -97,7 +100,7 @@ class CustomPasswordResetView(PasswordResetView):
         # Генерация нового случайного пароля
         new_password = ''.join([str(random.randint(0, 9)) for _ in range(12)])
         email = form.cleaned_data['email']
-        User = get_user_model()
+        user = get_user_model()
         user = User.objects.get(email=email)
         user.set_password(new_password)
         user.save()
@@ -113,14 +116,12 @@ class CustomPasswordResetView(PasswordResetView):
 
 class SuccessConfirmationMixin:
     def form_valid(self, form):
-
         code = form.cleaned_data.get('code')
         user = (
             User.objects.filter(confirmation_code=code).select_related('confirmation_code').first()
 
-
         )
-        user.is_active=True
+        user.is_active = True
         user.confirmation_code.delete()
         user.save()
         login(self.request, user)
@@ -128,7 +129,5 @@ class SuccessConfirmationMixin:
 
 
 class ConfirmationCodeView(FormView):
-
-        success_url = reverse_lazy('users:login')
-        template_name = 'users/password_confirm_email.html'
-    
+    success_url = reverse_lazy('users:login')
+    template_name = 'users/password_confirm_email.html'
