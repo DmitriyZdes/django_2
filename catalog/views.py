@@ -2,9 +2,11 @@ from django.forms import inlineformset_factory
 from django.http import Http404
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from catalog.models import Product, Version
+from catalog.models import Product, Version, Category
 from catalog.forms import ProductForm, VersionForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+
+from catalog.services import get_category_list_from_cache
 
 
 class ProductListView(ListView):
@@ -78,3 +80,11 @@ class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             formset.instance = self.object
             formset.save()
         return super().form_valid(form)
+
+class CategoryListView(ListView):
+
+    model = Category
+
+    def get_queryset(self):
+
+        return get_category_list_from_cache()
